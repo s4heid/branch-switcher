@@ -1,0 +1,8 @@
+---
+applications:
+- name: branch-switcher
+  memory: 128M
+  instances: 1
+  random-route: true
+  buildpack: nodejs_buildpack
+  command: npm run-script start
