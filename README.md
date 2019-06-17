@@ -1,7 +1,7 @@
 # branch-switcher
 
 > A GitHub App built with [Probot](https://github.com/probot/probot) which
-> updates the base ref of a pull request that has been opened against a wrong
+> updates the base ref of a pull request that has been opened against a non-preferred
 > branch.
 
 ## Setup
@@ -16,6 +16,16 @@ npm run build
 # Run the bot
 npm start
 ```
+
+## Configuration
+
+Create a `.github/switch.yml` file in the root of the repository where
+the branch-switcher has been installed. The following optional properties are supported:
+
+ * `preferredBranch` *(string)* - name of the preferred branch against which the
+   pull request should be opened. Default: develop.
+ * `switchComment` *(string)* - content of the message indicating that the base
+   has been updated to the preferred branch.
 
 ## Contributing
 

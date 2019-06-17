@@ -1,18 +1,17 @@
 import {Context} from 'probot'
 
 export interface Config {
-    preferredBranch: string
-    // responseRequired: boolean
-    response: string
+	preferredBranch: string
+	switchComment: string
 }
 
 const defaultConfig: Config = {
-    preferredBranch: 'develop',
-    // responseRequired: true,
-    response: 'The base branch of this pull request has been automatically updated to the `develop` branch. Thank you for your contributions.'
+	preferredBranch: 'develop',
+	switchComment: 'The base branch of this pull request has been automatically updated to the `develop` branch. Thank you for your contributions.'
 }
 
 export async function getConfig(context: Context) {
-    const config = await context.config('switch.yml', defaultConfig);
-    return config as Config
+	const config = await context.config('switch.yml', defaultConfig)
+	context.log.debug(config, 'Loaded config from .github/switch.yml')
+	return config as Config
 }
