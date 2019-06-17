@@ -93,6 +93,19 @@ describe('Branch switcher', () => {
 
 				await probot.receive({name: 'pull_request', payload})
 			})
+
+			test('respects exclude properties', async () => {
+				payload.pull_request.base = {'ref': 'dont-switch'}
+
+				const configData = 'exclude: [dont-*, really-dont-switch]'
+				contentFile.content = Buffer.from(configData).toString('base64')
+
+				nock('https://api.github.com')
+					.get('/repos/beans/testing-things/contents/.github/switch.yml')
+					.reply(200, contentFile)
+
+				await probot.receive({name: 'pull_request', payload})
+			})
 		})
 	})
 

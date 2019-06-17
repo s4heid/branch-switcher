@@ -26,6 +26,8 @@ the branch-switcher has been installed. The following optional properties are su
    pull request should be opened. Default: develop.
  * `switchComment` *(string)* - content of the message indicating that the base
    has been updated to the preferred branch.
+ * `exclude` *(Array\<string\>)* - list of branches that should be ignored. By
+   default, all branches are considered.
 
 ## Contributing
 
