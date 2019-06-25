@@ -26,8 +26,22 @@ the branch-switcher has been installed. The following optional properties are su
    pull request should be opened. Default: develop.
  * `switchComment` *(string)* - content of the message indicating that the base
    has been updated to the preferred branch.
- * `exclude` *(Array\<string\>)* - list of branches that should be ignored. By
-   default, all branches are considered.
+ * `exclude` *(Array)* - list of all branches and labels that should be ignored.
+   By default, all branches are considered and no labels are excluded.
+   - `branch` *(string)* - name of the branch that should be ignored.
+   - `label` *(string)* - name of the label that should be ignored.
+
+**Example:**
+
+```yaml
+exclude:
+- branch: do-nothing
+- branch: dont-touch-me
+- label: ignore-me
+```
+
+It does not switch the pull request base branch if there is a label `ignore-me` attached to it
+and it also does not switch if the base branch is either called `do-nothing` or `dont-touch-me`.
 
 ## Contributing
 

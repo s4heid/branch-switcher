@@ -4,7 +4,8 @@
     "number": 1,
     "user": {
       "login": "beans"
-    }
+    },
+    "labels": []
   },
   "repository": {
     "name": "testing-things",
