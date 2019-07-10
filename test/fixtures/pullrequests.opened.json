@@ -5,7 +5,10 @@
     "user": {
       "login": "beans"
     },
-    "labels": []
+    "labels": [],
+    "user": {
+      "login": "potatoe"
+    }
   },
   "repository": {
     "name": "testing-things",

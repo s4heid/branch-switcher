@@ -34,10 +34,18 @@ export async function update (context: import('probot').Context) {
   })
   await context.github.pullRequests.update(updateBranch)
 
-  context.log(`adding comment (${messageText})`)
+  const interpolatedMsg = messageText.replace(
+    /{{(?:author)}}/,
+    context.payload.pull_request.user.login
+  ).replace(
+    /{{(?:preferredBranch)}}/,
+    preferredBranch
+  )
+  context.log(`adding comment (${interpolatedMsg})`)
+
   const pullComment = context.repo({
     number: context.payload.pull_request.number,
-    body: messageText
+    body: interpolatedMsg
   })
   await context.github.issues.createComment(pullComment)
 }

@@ -4,7 +4,7 @@ import { Probot } from 'probot'
 import defaultPayload from './fixtures/pullrequests.opened.json'
 import contentFile from './fixtures/content_file.json'
 
-const prCreatedBody = { body: 'The base branch of this pull request has been automatically updated to the `develop` branch. Thank you for your contributions.' }
+const prCreatedBody = { body: 'Hello @potatoe. The base branch of this pull request has been updated to the `develop` branch. Please revisit the changes and make sure that there are no conflicts with the new base branch. Thank you for your contributions.' }
 
 nock.disableNetConnect()
 
@@ -87,6 +87,35 @@ describe('Branch switcher', () => {
         nock('https://api.github.com')
           .post('/repos/beans/testing-things/issues/1/comments', (body: any) => {
             done(expect(body.body).toEqual(expect.stringContaining('something')))
+            return true
+          })
+          .reply(200)
+
+        await probot.receive({ name: 'pull_request', payload })
+      })
+
+      test('interpolates variables from custom config into switchComment', async (done) => {
+        payload.pull_request.user.login = 'johndoe'
+
+        const configData = `preferredBranch: my-branch
+switchComment: "@{{author}}, base branch is now {{preferredBranch}}"
+`
+        contentFile.content = Buffer.from(configData).toString('base64')
+
+        nock('https://api.github.com')
+          .get('/repos/beans/testing-things/contents/.github/switch.yml')
+          .reply(200, contentFile)
+
+        nock('https://api.github.com')
+          .patch('/repos/beans/testing-things/pulls/1', (body: any) => {
+            expect(body).toMatchObject({ base: 'my-branch' })
+            return true
+          })
+          .reply(200)
+
+        nock('https://api.github.com')
+          .post('/repos/beans/testing-things/issues/1/comments', (body: any) => {
+            done(expect(body.body).toEqual(expect.stringContaining('@johndoe, base branch is now my-branch')))
             return true
           })
           .reply(200)

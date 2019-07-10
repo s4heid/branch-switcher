@@ -12,7 +12,7 @@ interface ExcludeConfig {
 const defaultConfig: Config = {
   preferredBranch: 'develop',
   exclude: [],
-  switchComment: 'The base branch of this pull request has been automatically updated to the `develop` branch. Thank you for your contributions.'
+  switchComment: 'Hello @{{author}}. The base branch of this pull request has been updated to the `{{preferredBranch}}` branch. Please revisit the changes and make sure that there are no conflicts with the new base branch. Thank you for your contributions.'
 }
 
 export async function getConfig (context: import('probot').Context) {

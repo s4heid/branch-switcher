@@ -43,7 +43,8 @@ The following properties are currently supported:
  * `preferredBranch` *(string)* - name of the preferred branch against which the
    pull request should be opened. Default: develop.
  * `switchComment` *(string)* - content of the message indicating that the base
-   has been updated to the preferred branch.
+   has been updated to the preferred branch. `{{author}}` can be used as a placeholder
+   which interpolates to the pull request author and `{{preferredBranch}}` analogously.
  * `exclude` *(Array)* - list of all branches and labels that should be ignored.
    By default, all branches are considered and no labels are excluded.
    - `branch` *(string)* - name of the branch that should be ignored.
@@ -56,6 +57,9 @@ exclude:
 - branch: do-nothing
 - branch: dont-touch-*
 - label: ignore-me
+switchComment: >
+  Hey @{author}, the base branch of your pull request has been changed.
+  Have a nice day! :wave:
 ```
 
 Above config does not touch the base branch if there is a label `ignore-me` attached
