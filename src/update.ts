@@ -1,7 +1,6 @@
-import { Context } from 'probot'
 import { getConfig } from './config'
 
-export async function update (context: Context) {
+export async function update (context: import('probot').Context) {
   const cfg = await getConfig(context)
   const preferredBranch = cfg.preferredBranch
   const messageText = cfg.switchComment
@@ -13,7 +12,7 @@ export async function update (context: Context) {
   const excludeLabels = exclude.filter(c => c.label).map(c => c.label)
 
   if (actualBranch === preferredBranch) {
-    context.log('skipping (branch ${actualBranch} is already preferred)')
+    context.log(`skipping (branch ${actualBranch} is already preferred)`)
     return
   }
 

@@ -1,8 +1,7 @@
-import { Application } from 'probot'
 import { update } from './update'
 
-const cop = (app: Application) => {
-  app.log.info('Branch Switcher is listening...')
+const cop = (app: import('probot').Application) => {
+  app.log.info('Branch Switcher is listening for events...')
   app.on([
     'pull_request.opened',
     'pull_request.reopened',
