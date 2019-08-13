@@ -1,0 +1,23 @@
+{
+  "name": "branch-switcher",
+  "version": 2,
+  "alias": "branch-switcher.now.sh",
+  "public": true,
+  "env": {
+    "APP_ID": "@app-id",
+    "WEBHOOK_SECRET": "@webhook-secret",
+    "PRIVATE_KEY": "@private-key-base64-encoded"
+  },
+  "builds": [
+    {
+      "src": "/lib/index.js",
+      "use": "@now/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/",
+      "dest": "/lib/index.js"
+    }
+  ]
+}

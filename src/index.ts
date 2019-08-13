@@ -11,4 +11,5 @@ const cop = (app: import('probot').Application) => {
   ], update)
 }
 
-export = cop
+var serverless = require('@chadfawcett/probot-serverless-now')
+export = process.env.NODE_ENV === 'production' ? serverless(cop) : cop
