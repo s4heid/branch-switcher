@@ -30,7 +30,7 @@ which triggers
 
 ## Installation
 
-1. [Install the GitHub App](https://github.com/apps/branch-switcher) for the intended repositories
+1. [Install the GitHub App](https://github.com/apps/branch-switcher) for the intended repositories.
 1. Create a `.github/switch.yml` file in the root of the intended repositories where
 branch-switcher has been installed. This configuration file is optional and overrides any of the default
 settings.
@@ -58,8 +58,8 @@ exclude:
 - branch: dont-touch-*
 - label: ignore-me
 switchComment: >
-  Hey @{author}, the base branch of your pull request has been changed.
-  Have a nice day! :wave:
+  Hey @{{author}}, the base branch of your pull request has been changed
+  to {{preferredBranch}}. Have a nice day! :wave:
 ```
 
 Above config does not touch the base branch if there is a label `ignore-me` attached
