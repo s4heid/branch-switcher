@@ -1,9 +1,12 @@
 {
   "name": "branch-switcher",
   "version": "1.0.0",
+  "contributors": [
+    "Danny Berger",
+    "Sebastian Heid"
+  ],
   "description": "A branch switcher app.",
-  "author": "Sebastian Heid <sebastian.heid45@gmail.com>",
-  "license": "ISC",
+  "license": "Apache 2.0",
   "repository": "https://github.com/s4heid/branch-switcher.git",
   "homepage": "https://github.com/s4heid/branch-switcher",
   "bugs": "https://github.com/s4heid/branch-switcher/issues",

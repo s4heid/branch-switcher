@@ -1,6 +1,7 @@
 # branch-switcher
 
 [![Build Status](https://travis-ci.org/s4heid/branch-switcher.svg?branch=master)](https://travis-ci.org/s4heid/branch-switcher)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
 A GitHub App built with [Probot](https://github.com/probot/probot) that automatically
@@ -101,4 +102,4 @@ For more, check out the [Contributing Guide](CONTRIBUTING.md).
 
 ## License
 
-[ISC](LICENSE)
+[Apache 2.0](LICENSE)
