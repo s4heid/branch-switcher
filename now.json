@@ -6,18 +6,19 @@
   "env": {
     "APP_ID": "@app-id",
     "WEBHOOK_SECRET": "@webhook-secret",
-    "PRIVATE_KEY": "@private-key-base64-encoded"
+    "PRIVATE_KEY": "@private-key-base64-encoded",
+    "IS_NOW": "true"
   },
   "builds": [
     {
-      "src": "/lib/index.js",
-      "use": "@now/node"
+      "src": "./src/*.ts",
+      "use": "@now/node@canary"
     }
   ],
   "routes": [
     {
       "src": "/",
-      "dest": "/lib/index.js"
+      "dest": "/src"
     }
   ]
 }

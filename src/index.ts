@@ -1,4 +1,5 @@
 import { update } from './update'
+import { serverless } from '@chadfawcett/probot-serverless-now'
 
 const cop = (app: import('probot').Application) => {
   app.log.info('Branch Switcher is listening for events...')
@@ -11,5 +12,4 @@ const cop = (app: import('probot').Application) => {
   ], update)
 }
 
-var serverless = require('@chadfawcett/probot-serverless-now')
-export = process.env.NODE_ENV === 'production' ? serverless(cop) : cop
+export = process.env.IS_NOW ? serverless(cop) : cop
