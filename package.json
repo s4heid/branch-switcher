@@ -39,13 +39,13 @@
     "standard": "^14.3.1",
     "ts-jest": "^24.1.0",
     "typescript": "^3.6.3",
-    "typescript-eslint-parser": "^22.0.0"
+    "@typescript-eslint/parser": "^2.3.2"
   },
   "engines": {
     "node": ">= 8.3.0"
   },
   "standard": {
-    "parser": "typescript-eslint-parser",
+    "parser": "@typescript-eslint/parser",
     "env": [
       "jest"
     ],

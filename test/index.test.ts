@@ -21,7 +21,7 @@ describe('Branch switcher', () => {
   describe('opened against non-preferred branch', () => {
     beforeEach(() => {
       payload = defaultPayload
-      payload.pull_request.base = { 'ref': 'master' }
+      payload.pull_request.base = { ref: 'master' }
     })
 
     test('can comment on openend pull requests', async (done) => {
@@ -124,7 +124,7 @@ switchComment: "@{{author}}, base branch is now {{preferredBranch}}"
       })
 
       test('respects exclude properties', async () => {
-        payload.pull_request.base = { 'ref': 'dont-switch' }
+        payload.pull_request.base = { ref: 'dont-switch' }
 
         const configData = 'exclude: [branch: dont-*, branch: really-dont-switch]'
         contentFile.content = Buffer.from(configData).toString('base64')
@@ -137,7 +137,7 @@ switchComment: "@{{author}}, base branch is now {{preferredBranch}}"
       })
 
       test('respects exclude label properties', async () => {
-        payload.pull_request.labels = [{ 'name': 'ignore' }]
+        payload.pull_request.labels = [{ name: 'ignore' }]
 
         const configData = 'exclude: [label: ignore]'
         contentFile.content = Buffer.from(configData).toString('base64')
@@ -154,7 +154,7 @@ switchComment: "@{{author}}, base branch is now {{preferredBranch}}"
   describe('opened against the preferred branch', () => {
     beforeEach(() => {
       payload = defaultPayload
-      payload.pull_request.base = { 'ref': 'develop' }
+      payload.pull_request.base = { ref: 'develop' }
     })
 
     test('does not comment', async () => {
