@@ -32,7 +32,7 @@ which triggers
 ## Installation
 
 1. [Install the GitHub App](https://github.com/apps/branch-switcher) for the intended repositories.
-1. Create a `.github/switch.yml` file in the root of the intended repositories where
+1. Create a `.github/branch-switcher.yml` file in the root of the intended repositories where
 branch-switcher has been installed. This configuration file is optional and overrides any of the default
 settings.
 
@@ -51,7 +51,7 @@ The following properties are currently supported:
    - `branch` *(string)* - name of the branch that should be ignored.
    - `label` *(string)* - name of the label that should be ignored.
 
-**Example** `.github/switch.yml`:
+**Example** `.github/branch-switcher.yml`:
 
 ```yaml
 exclude:
@@ -77,7 +77,7 @@ set the following **Permissions & events** for the GitHub App:
     - [x] Check the box for **Pull request review comment** events
   - Repository metadata - **Read-only**
   - Single File - **Read-only**
-    - Path: `.github/switch.yml`
+    - Path: `.github/branch-switcher.yml`
 1. Clone the repo:
   ```sh
   git clone git@github.com:s4heid/branch-switcher.git

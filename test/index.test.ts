@@ -35,7 +35,7 @@ describe('Branch switcher', () => {
         .reply(200)
 
       nock('https://api.github.com')
-        .get('/repos/beans/testing-things/contents/.github/switch.yml')
+        .get('/repos/beans/testing-things/contents/.github/branch-switcher.yml')
         .reply(404)
 
       await probot.receive({ name: 'pull_request', payload })
@@ -43,7 +43,7 @@ describe('Branch switcher', () => {
 
     test('can switch the base to the preferred branch', async (done) => {
       nock('https://api.github.com')
-        .get('/repos/beans/testing-things/contents/.github/switch.yml')
+        .get('/repos/beans/testing-things/contents/.github/branch-switcher.yml')
         .reply(404)
 
       nock('https://api.github.com')
@@ -65,8 +65,8 @@ describe('Branch switcher', () => {
 
     describe('when custom config exists', () => {
       beforeEach(() => {
-        contentFile.name = 'switch.yml'
-        contentFile.path = '.github/switch.yml'
+        contentFile.name = 'branch-switcher.yml'
+        contentFile.path = '.github/branch-switcher.yml'
       })
 
       test('can customize switchComment message', async (done) => {
@@ -74,7 +74,7 @@ describe('Branch switcher', () => {
         contentFile.content = Buffer.from(configData).toString('base64')
 
         nock('https://api.github.com')
-          .get('/repos/beans/testing-things/contents/.github/switch.yml')
+          .get('/repos/beans/testing-things/contents/.github/branch-switcher.yml')
           .reply(200, contentFile)
 
         nock('https://api.github.com')
@@ -103,7 +103,7 @@ switchComment: "@{{author}}, base branch is now {{preferredBranch}}"
         contentFile.content = Buffer.from(configData).toString('base64')
 
         nock('https://api.github.com')
-          .get('/repos/beans/testing-things/contents/.github/switch.yml')
+          .get('/repos/beans/testing-things/contents/.github/branch-switcher.yml')
           .reply(200, contentFile)
 
         nock('https://api.github.com')
@@ -130,7 +130,7 @@ switchComment: "@{{author}}, base branch is now {{preferredBranch}}"
         contentFile.content = Buffer.from(configData).toString('base64')
 
         nock('https://api.github.com')
-          .get('/repos/beans/testing-things/contents/.github/switch.yml')
+          .get('/repos/beans/testing-things/contents/.github/branch-switcher.yml')
           .reply(200, contentFile)
 
         await probot.receive({ name: 'pull_request', payload })
@@ -143,7 +143,7 @@ switchComment: "@{{author}}, base branch is now {{preferredBranch}}"
         contentFile.content = Buffer.from(configData).toString('base64')
 
         nock('https://api.github.com')
-          .get('/repos/beans/testing-things/contents/.github/switch.yml')
+          .get('/repos/beans/testing-things/contents/.github/branch-switcher.yml')
           .reply(200, contentFile)
 
         await probot.receive({ name: 'pull_request', payload })
@@ -159,7 +159,7 @@ switchComment: "@{{author}}, base branch is now {{preferredBranch}}"
 
     test('does not comment', async () => {
       nock('https://api.github.com')
-        .get('/repos/beans/testing-things/contents/.github/switch.yml')
+        .get('/repos/beans/testing-things/contents/.github/branch-switcher.yml')
         .reply(404)
 
       await probot.receive({ name: 'pull_request', payload })
