@@ -72,18 +72,17 @@ on the pull request and it also does not switch if the base branch is either cal
 
 1. Follow the [docs for deployment](https://probot.github.io/docs/deployment) and
 set the following **Permissions & events** for the GitHub App:
-
   - Pull requests - **Read & Write**
     - [x] Check the box for **Pull request review comment** events
   - Repository metadata - **Read-only**
   - Single File - **Read-only**
     - Path: `.github/branch-switcher.yml`
-1. Clone the repo:
+2. Clone the repo:
   ```sh
   git clone git@github.com:s4heid/branch-switcher.git
   ```
-1. Copy [.env.example](.env.example) to `.env` and set the right environment variables as described in the official [probot docs](https://probot.github.io/docs/configuration)
-1. Install app dependencies and run the app:
+3. Copy [.env.example](.env.example) to `.env` and set the right environment variables as described in the official [probot docs](https://probot.github.io/docs/configuration)
+4. Install app dependencies and run the app:
   ```sh
   # Install dependencies
   npm install
