@@ -1,7 +1,7 @@
+import { ApplicationFunction, Application } from 'probot' // eslint-disable-line no-unused-vars
 import { update } from './update'
-import { serverless } from '@chadfawcett/probot-serverless-now'
 
-const cop = (app: import('probot').Application) => {
+const main: ApplicationFunction = (app: Application) => {
   app.log.info('Branch Switcher is listening for events...')
   app.on([
     'pull_request.opened',
@@ -12,4 +12,4 @@ const cop = (app: import('probot').Application) => {
   ], update)
 }
 
-export = process.env.IS_NOW ? serverless(cop) : cop
+export = main
