@@ -40,7 +40,7 @@
     "smee-client": "^1.0.2",
     "standard": "^14.3.1",
     "ts-jest": "^24.3.0",
-    "typescript": "^3.7.4"
+    "typescript": "^3.7.5"
   },
   "engines": {
     "node": ">= 8.3.0"
