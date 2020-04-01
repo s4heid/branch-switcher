@@ -26,7 +26,7 @@
   "dependencies": {
     "@types/nock": "^11.1.0",
     "nock": "^12.0.3",
-    "probot": "^7.2.0",
+    "probot": "^9.11.2",
     "probot-serverless-now": "^2.1.2"
   },
   "devDependencies": {
