@@ -36,7 +36,7 @@
     "acorn": "^7.1.1",
     "eslint-plugin-typescript": "^0.14.0",
     "jest": "^25.2.4",
-    "nodemon": "^2.0.2",
+    "nodemon": "^2.0.3",
     "smee-client": "^1.0.2",
     "standard": "^14.3.3",
     "ts-jest": "^25.3.0",
