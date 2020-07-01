@@ -30,7 +30,7 @@
     "probot-serverless-now": "^2.1.2"
   },
   "devDependencies": {
-    "@types/jest": "^25.1.4",
+    "@types/jest": "^26.0.3",
     "@types/node": "^13.9.8",
     "@typescript-eslint/parser": "^2.26.0",
     "acorn": "^7.1.1",
