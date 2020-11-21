@@ -3,17 +3,14 @@
   "pull_request": {
     "number": 1,
     "user": {
-      "login": "beans"
-    },
-    "labels": [],
-    "user": {
       "login": "potatoe"
-    }
+    },
+    "labels": []
   },
   "repository": {
-    "name": "testing-things",
+    "name": "branch-switcher",
     "owner": {
-      "login": "beans"
+      "login": "s4heid"
     }
   }
 }

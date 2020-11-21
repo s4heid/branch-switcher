@@ -6,7 +6,7 @@ export async function update (context: import('probot').Context) {
   const messageText = cfg.switchComment
   const exclude = cfg.exclude
   const actualBranch = context.payload.pull_request.base.ref
-  const actualLabels = context.payload.pull_request.labels.map((c: {name: string}) => c.name)
+  const actualLabels = context.payload.pull_request.labels.map((c: { name: string }) => c.name)
 
   const excludeBranches = exclude.filter(c => c.branch).map(c => c.branch)
   const excludeLabels = exclude.filter(c => c.label).map(c => c.label)
@@ -29,10 +29,10 @@ export async function update (context: import('probot').Context) {
 
   context.log(`changing branch (to ${preferredBranch}; from ${actualBranch})`)
   const updateBranch = context.repo({
-    number: context.payload.pull_request.number,
+    pull_number: context.payload.pull_request.number,
     base: preferredBranch
   })
-  await context.github.pullRequests.update(updateBranch)
+  await context.github.pulls.update(updateBranch)
 
   const interpolatedMsg = messageText.replace(
     /{{(?:author)}}/,
@@ -44,8 +44,14 @@ export async function update (context: import('probot').Context) {
   context.log(`adding comment (${interpolatedMsg})`)
 
   const pullComment = context.repo({
-    number: context.payload.pull_request.number,
+    issue_number: context.payload.pull_request.number,
     body: interpolatedMsg
   })
-  await context.github.issues.createComment(pullComment)
+
+  try {
+    await context.github.issues.createComment(pullComment)
+  } catch (err) {
+    err.message = `There was an issue commenting on PR #${pullComment.issue_number} \n\n${err.message}`
+    context.log.error(err)
+  }
 }
