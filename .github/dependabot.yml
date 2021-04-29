@@ -1,0 +1,30 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: monthly
+    time: "04:00"
+  open-pull-requests-limit: 10
+  reviewers:
+  - s4heid
+  ignore:
+  - dependency-name: probot
+    versions:
+    - 11.0.1
+    - 11.0.5
+  - dependency-name: "@typescript-eslint/parser"
+    versions:
+    - 4.11.1
+    - 4.14.1
+  - dependency-name: nock
+    versions:
+    - 13.0.5
+    - 13.0.7
+  - dependency-name: "@types/node"
+    versions:
+    - 14.14.17
+    - 14.14.22
+  - dependency-name: "@types/jest"
+    versions:
+    - 26.0.19
