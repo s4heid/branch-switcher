@@ -1,15 +1,15 @@
-import { getConfig } from './config'
+import { loadConfig } from './config'
 
 export async function update (context: import('probot').Context) {
-  const cfg = await getConfig(context)
+  const cfg = await loadConfig(context)
   const preferredBranch = cfg.preferredBranch
   const messageText = cfg.switchComment
   const exclude = cfg.exclude
   const actualBranch = context.payload.pull_request.base.ref
   const actualLabels = context.payload.pull_request.labels.map((c: { name: string }) => c.name)
 
-  const excludeBranches = exclude.filter(c => c.branch).map(c => c.branch)
-  const excludeLabels = exclude.filter(c => c.label).map(c => c.label)
+  const excludeBranches = (exclude || []).filter(c => c.branch).map(c => c.branch)
+  const excludeLabels = (exclude || []).filter(c => c.label).map(c => c.label)
 
   if (actualBranch === preferredBranch) {
     context.log(`skipping (branch ${actualBranch} is already preferred)`)
@@ -32,7 +32,7 @@ export async function update (context: import('probot').Context) {
     pull_number: context.payload.pull_request.number,
     base: preferredBranch
   })
-  await context.github.pulls.update(updateBranch)
+  await context.octokit.pulls.update(updateBranch)
 
   const interpolatedMsg = messageText.replace(
     /{{(?:author)}}/,
@@ -49,7 +49,7 @@ export async function update (context: import('probot').Context) {
   })
 
   try {
-    await context.github.issues.createComment(pullComment)
+    await context.octokit.issues.createComment(pullComment)
   } catch (err) {
     err.message = `There was an issue commenting on PR #${pullComment.issue_number} \n\n${err.message}`
     context.log.error(err)

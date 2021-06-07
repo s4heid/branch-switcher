@@ -24,27 +24,27 @@
     "test:watch": "jest --watch --notify --notifyMode=change --coverage"
   },
   "dependencies": {
-    "@types/nock": "^11.1.0",
-    "nock": "^13.0.4",
-    "probot": "^9.15.0",
+    "probot": "^11.3.2",
     "probot-serverless-now": "^2.1.2"
   },
   "devDependencies": {
-    "@types/jest": "^25.1.4",
-    "@types/node": "^14.0.27",
-    "@typescript-eslint/parser": "^3.7.1",
-    "acorn": "^8.0.4",
+    "@types/jest": "^26.0.19",
+    "@types/nock": "^11.1.0",
+    "@types/node": "^15.6.1",
+    "@typescript-eslint/parser": "^4.26.1",
+    "@vercel/ncc": "^0.24",
+    "acorn": "^8.3.0",
     "eslint-plugin-typescript": "^0.14.0",
-    "jest": "^25.5.4",
-    "nodemon": "^2.0.6",
+    "jest": "^26.6.3",
+    "nock": "^13.1.0",
+    "nodemon": "^2.0.7",
     "smee-client": "^1.2.2",
-    "standard": "^14.3.4",
-    "ts-jest": "^25.5.1",
-    "typescript": "^3.9.7",
-    "@vercel/ncc": "^0.24"
+    "standard": "^16.0.3",
+    "ts-jest": "^26.4.4",
+    "typescript": "^4.1.3"
   },
   "engines": {
-    "node": ">= 8.3.0"
+    "node": ">= 10.13.0"
   },
   "standard": {
     "parser": "@typescript-eslint/parser",
