@@ -1,10 +1,11 @@
 import nock from 'nock'
+import { Probot, ProbotOctokit } from 'probot'
 import branchSwitcher from '../src'
-import { Probot } from 'probot'
+import * as helper from './test-helper'
 import defaultPayload from './fixtures/pullrequests.opened.json'
 import contentFile from './fixtures/content_file.json'
 
-const defaultComment = { body: 'Hello @potatoe. The base branch of this pull request has been updated to the `develop` branch. Please revisit the changes and make sure that there are no conflicts with the new base branch. Thank you for your contributions.' }
+const defaultComment = { body: 'Hello @dpb587. The base branch of this pull request has been updated to the `develop` branch. Please revisit the changes and make sure that there are no conflicts with the new base branch. Thank you for your contributions.' }
 
 describe('Branch switcher', () => {
   let probot: any
@@ -13,15 +14,14 @@ describe('Branch switcher', () => {
   beforeEach(() => {
     nock.disableNetConnect()
     probot = new Probot({
-      id: 123,
-      githubToken: 'test'
+      appId: 123,
+      githubToken: 'test-token',
+      Octokit: ProbotOctokit.defaults({
+        retry: { enabled: false },
+        throttle: { enabled: false }
+      })
     })
-    const app = probot.load(branchSwitcher)
-
-    app.app = {
-      getInstallationAccessToken: () => Promise.resolve('test')
-    }
-    nock.cleanAll()
+    probot.load(branchSwitcher)
   })
 
   describe('opened against non-preferred branch', () => {
@@ -31,7 +31,7 @@ describe('Branch switcher', () => {
     })
 
     it('can comment on open pull requests', async (done) => {
-      nock('https://api.github.com')
+      nock(helper.endpoint)
         .patch('/repos/s4heid/branch-switcher/pulls/1')
         .reply(200)
         .post('/repos/s4heid/branch-switcher/issues/1/comments', (body: any) => {
@@ -40,30 +40,22 @@ describe('Branch switcher', () => {
         })
         .reply(200)
 
-      nock('https://api.github.com')
-        .get('/repos/s4heid/branch-switcher/contents/.github/branch-switcher.yml')
-        .reply(404)
-        .get('/repos/s4heid/.github/contents/.github/branch-switcher.yml')
-        .reply(404)
+      helper.nockEmptyConfig()
 
       await probot.receive({ name: 'pull_request', payload })
     })
 
     it('can switch the base to the preferred branch', async (done) => {
-      nock('https://api.github.com')
-        .get('/repos/s4heid/branch-switcher/contents/.github/branch-switcher.yml')
-        .reply(404)
-        .get('/repos/s4heid/.github/contents/.github/branch-switcher.yml')
-        .reply(404)
+      helper.nockEmptyConfig()
 
-      nock('https://api.github.com')
+      nock(helper.endpoint)
         .patch('/repos/s4heid/branch-switcher/pulls/1', (body: any) => {
           expect(body).toMatchObject({ base: 'develop' })
           return true
         })
         .reply(200)
 
-      nock('https://api.github.com')
+      nock(helper.endpoint)
         .post('/repos/s4heid/branch-switcher/issues/1/comments', (body: any) => {
           done(expect(body.body).toEqual(expect.stringContaining('The base')))
           return true
@@ -79,22 +71,16 @@ describe('Branch switcher', () => {
         contentFile.path = '.github/branch-switcher.yml'
       })
 
-      it('can customize switchComment message', async (done) => {
-        const configData = 'switchComment: something'
-        contentFile.content = Buffer.from(configData).toString('base64')
+      it('can customize message of the comment', async (done) => {
+        helper.nockUserConfig('switchComment: something')
 
-        nock('https://api.github.com')
-          .get('/repos/s4heid/branch-switcher/contents/.github/branch-switcher.yml')
-          .reply(200, contentFile)
-
-        nock('https://api.github.com')
+        nock(helper.endpoint)
           .patch('/repos/s4heid/branch-switcher/pulls/1', (body: any) => {
             expect(body).toMatchObject({ base: 'develop' })
             return true
           })
           .reply(200)
 
-        nock('https://api.github.com')
           .post('/repos/s4heid/branch-switcher/issues/1/comments', (body: any) => {
             done(expect(body.body).toEqual(expect.stringContaining('something')))
             return true
@@ -104,26 +90,20 @@ describe('Branch switcher', () => {
         await probot.receive({ name: 'pull_request', payload })
       })
 
-      it('interpolates variables from custom config into switchComment', async (done) => {
+      it('can interpolate variables from custom config into the comment', async (done) => {
         payload.pull_request.user.login = 'johndoe'
 
-        const configData = `preferredBranch: my-branch
+        helper.nockUserConfig(`preferredBranch: my-branch
 switchComment: "@{{author}}, base branch is now {{preferredBranch}}"
-`
-        contentFile.content = Buffer.from(configData).toString('base64')
+`)
 
-        nock('https://api.github.com')
-          .get('/repos/s4heid/branch-switcher/contents/.github/branch-switcher.yml')
-          .reply(200, contentFile)
-
-        nock('https://api.github.com')
+        nock(helper.endpoint)
           .patch('/repos/s4heid/branch-switcher/pulls/1', (body: any) => {
             expect(body).toMatchObject({ base: 'my-branch' })
             return true
           })
           .reply(200)
 
-        nock('https://api.github.com')
           .post('/repos/s4heid/branch-switcher/issues/1/comments', (body: any) => {
             done(expect(body.body).toEqual(expect.stringContaining('@johndoe, base branch is now my-branch')))
             return true
@@ -136,12 +116,7 @@ switchComment: "@{{author}}, base branch is now {{preferredBranch}}"
       it('respects exclude properties', async () => {
         payload.pull_request.base = { ref: 'dont-switch' }
 
-        const configData = 'exclude: [branch: dont-*, branch: really-dont-switch]'
-        contentFile.content = Buffer.from(configData).toString('base64')
-
-        nock('https://api.github.com')
-          .get('/repos/s4heid/branch-switcher/contents/.github/branch-switcher.yml')
-          .reply(200, contentFile)
+        helper.nockUserConfig('exclude: [branch: dont-*, branch: really-dont-switch]')
 
         await probot.receive({ name: 'pull_request', payload })
       })
@@ -149,12 +124,7 @@ switchComment: "@{{author}}, base branch is now {{preferredBranch}}"
       it('respects exclude label properties', async () => {
         payload.pull_request.labels = [{ name: 'ignore' }]
 
-        const configData = 'exclude: [label: ignore]'
-        contentFile.content = Buffer.from(configData).toString('base64')
-
-        nock('https://api.github.com')
-          .get('/repos/s4heid/branch-switcher/contents/.github/branch-switcher.yml')
-          .reply(200, contentFile)
+        helper.nockUserConfig('exclude: [label: ignore]')
 
         await probot.receive({ name: 'pull_request', payload })
       })
@@ -168,11 +138,7 @@ switchComment: "@{{author}}, base branch is now {{preferredBranch}}"
     })
 
     it('does not comment', async () => {
-      nock('https://api.github.com')
-        .get('/repos/s4heid/branch-switcher/contents/.github/branch-switcher.yml')
-        .reply(404)
-        .get('/repos/s4heid/.github/contents/.github/branch-switcher.yml')
-        .reply(404)
+      helper.nockEmptyConfig()
 
       await probot.receive({ name: 'pull_request', payload })
     })

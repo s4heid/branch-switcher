@@ -1,7 +1,7 @@
-import { Application } from 'probot' // eslint-disable-line no-unused-vars
+import { Probot } from 'probot'
 import { update } from './update'
 
-export = (app: Application) => {
+export = (app: Probot) => {
   app.log.info('Branch Switcher is listening for events...')
   app.on([
     'pull_request.opened',
